@@ -24,6 +24,32 @@ npm install
 yarn install
 ```
 
+Build frontend app in production
+
+```bash
+# NPM
+npm run prod
+
+# Yarn
+yarn prod
+```
+
+If you want to run in dev build, follow this command
+
+```bash
+# NPM
+npm run watch
+
+# Yarn
+yarn watch
+```
+
+Serve backend app
+
+```bash
+php artisan serve #default port: 8000
+```
+
 ## Further Note
 
 This app still doesn't have Authentication as I just keep some credential in ```localStorage``` instead of generating token to authenticate APIs (JWT library provided by Tymon is not fully compatible with Laravel 6).
