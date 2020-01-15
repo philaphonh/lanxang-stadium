@@ -16,6 +16,7 @@
           <li>Vue: ເຟຣມເວີກພາສາ Javascript ນ້ອງໃໝ່ໄຟແຮງ</li>
           <li>Tailwind: ເຟຣມເວີກພາສາ CSS ທີ່ມີຄວາມສາມາດໃນການປັບແຕ່ງຕາມໃຈສູງ</li>
       </ul>
+      <p>ສາມາດເຂົ້າໄປເບິ່ງ source code ໄດ້ທີ່ <a class="text-gray-700 underline" href="https://github.com/ArtyDev57/lanxang-stadium" target="_blank">github.com/ArtyDev57/lanxang-stadium</a>.</p>
     </div>
   </div>
 </template>

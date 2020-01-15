@@ -85,7 +85,7 @@
               <button
                 v-if="!completed"
                 v-bind:disabled="!confirmed"
-                @click="reserve()"
+                @click="reserve"
                 class="bg-gray-700 text-white rounded-full px-4 py-2"
               >ຈອງເລີຍ</button>
               <p
@@ -147,6 +147,7 @@ export default {
         });
     },
     reserve() {
+      this.reservationByDate = [];
       this.alreadyTaken = false;
       if (this.name === "") {
         this.nameErr = "ກະລຸນາໃສ່ຊື່ຂອງທ່ານ";
@@ -169,12 +170,6 @@ export default {
         this.timeErr == "" &&
         this.selectedDateErr == ""
       ) {
-        console.log(`
-            ${this.name}
-            ${this.stadium}: ${this.sid}
-            ${moment(this.selectedDate).format("DD/MM/YYYY")}
-            ${this.time}
-          `);
         axios
           .get("/api/reservationinfobydateandstadium", {
             params: {
@@ -186,37 +181,42 @@ export default {
             // console.log(res.data.info);
             this.reservationByDate = res.data.info;
             console.log(this.reservationByDate);
-            this.reservationByDate.forEach(data => {
+            for (let data of this.reservationByDate) {
               if (
                 data.selected_time_id == this.time &&
                 data.stadium_id == parseInt(this.sid)
               ) {
                 this.alreadyTaken = true;
                 console.log("Already Taken");
-                return;
               }
-            });
-          })
-          .catch(err => {
-            console.log(err);
-          });
-        axios
-          .post("/api/reserve", {
-            name: this.name,
-            stadium: this.sid,
-            time: this.time,
-            selecteddate: this.selectedDate
-          })
-          .then(res => {
-            console.log(res.data.message);
-            if (res.data.message == "Successful") {
-              console.log("Yes");
-              this.completed = true;
+            }
+            if (this.alreadyTaken) {
+              return;
+            } else {
+              axios
+                .post("/api/reserve", {
+                  name: this.name,
+                  stadium: this.sid,
+                  time: this.time,
+                  selecteddate: this.selectedDate
+                })
+                .then(res => {
+                  console.log(res.data.message);
+                  if (res.data.message == "Successful") {
+                    console.log("Yes");
+                    this.completed = true;
+                  }
+                })
+                .catch(err => {
+                  console.log(err);
+                });
             }
           })
           .catch(err => {
             console.log(err);
           });
+      } else {
+        return;
       }
     }
   }
