@@ -190,10 +190,8 @@ export default {
                 console.log("Already Taken");
               }
             }
-            if (this.alreadyTaken) {
-              return;
-            } else {
-              axios
+            if (!this.alreadyTaken) {
+                axios
                 .post("/api/reserve", {
                   name: this.name,
                   stadium: this.sid,
