@@ -8,6 +8,16 @@ This is an assigment of PHP 2 class at National University of Laos
 
 ## Setup
 
+Before setup, make sure the following tools are installed on your machine:
+
+- PHP
+- Composer: Package manager for PHP
+- Node.js: Javascript runtime
+- NPM: Package manager for Javascript
+- MySQL: Database system
+
+Set your environment variables in ```.env``` including your database connection info.
+
 Install Laravel dependencies with Composer, a package manager for PHP
 
 ```bash
@@ -22,6 +32,12 @@ npm install
 
 # Yarn
 yarn install
+```
+
+Migrate the database
+
+```bash
+php artisan migrate
 ```
 
 Build frontend app in production
