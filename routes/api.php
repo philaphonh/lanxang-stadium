@@ -38,3 +38,5 @@ Route::post('reserve', 'ReservationController@reserve');
 Route::post('send', 'ContactController@send');
 
 Route::put('checkin/{id}', 'ReservationController@checkin');
+
+Route::delete('deletereservation/{id}', 'ReservationController@deleteReservation');

@@ -16,6 +16,8 @@
           <li>Vue: ເຟຣມເວີກພາສາ Javascript ນ້ອງໃໝ່ໄຟແຮງ</li>
           <li>Tailwind: ເຟຣມເວີກພາສາ CSS ທີ່ມີຄວາມສາມາດໃນການປັບແຕ່ງຕາມໃຈສູງ</li>
       </ul>
+      <h2 class="underline my-2">ໝາຍເຫດ</h2>
+      <p>ເວັບນີ້ຍັງມີບາງຢ່າງທີ່ບໍ່ສົມບູນເຊັ່ນ ການຢືນຢັນຕົວຕົນ, ຕາຕະລາງເວລາເດີ່ນ ເປັນຕົ້ນ ເຊິ່ງສາມາດປັບປຸງໄດ້ດ້ວຍຕົວທ່ານເອງ.</p>
       <p>ສາມາດເຂົ້າໄປເບິ່ງ source code ໄດ້ທີ່ <a class="text-gray-700 underline" href="https://github.com/ArtyDev57/lanxang-stadium" target="_blank">github.com/ArtyDev57/lanxang-stadium</a>.</p>
     </div>
   </div>

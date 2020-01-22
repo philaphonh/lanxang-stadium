@@ -20,8 +20,14 @@
           />
         </div>
         <div class="mx-2">
-          <button @click="getReservationInfoByDate()" class="bg-gray-700 text-white rounded-full px-4 py-2 shadow-lg">ຄົ້ນຫາ</button>
-          <button @click="refresh()" class="bg-gray-700 text-white rounded-full px-4 py-2 shadow-lg">ໂຫຼດໃໝ່</button>
+          <button
+            @click="getReservationInfoByDate()"
+            class="bg-gray-700 text-white rounded-full px-4 py-2 shadow-lg"
+          >ຄົ້ນຫາ</button>
+          <button
+            @click="refresh()"
+            class="bg-gray-700 text-white rounded-full px-4 py-2 shadow-lg"
+          >ໂຫຼດໃໝ່</button>
         </div>
       </form>
     </div>
@@ -67,6 +73,12 @@
                 :class="r.is_checked_in ? 'bg-green-500' : 'bg-gray-700'"
               >{{ r.is_checked_in ? 'ເຊັກອິນແລ້ວ' : 'ເຊັກອິນ' }}</button>
             </td>
+            <td>
+              <button
+                @click="deleteReservation(r.reservation_id)"
+                class="bg-red-500 text-white px-4 py-2 rounded"
+              >ລົບ</button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -100,6 +112,36 @@
         </tbody>
       </table>
     </div>
+    <div class="text-2xl my-4 text-center">
+      <h2>ຂໍ້ມູນເດີ່ນ</h2>
+      <p>ຕ້ອງການເພີ່ມ ຫຼື່ ແກ້ໄຂຂໍ້ມູນເດີ່ນ ກະລຸນາຕິດຕໍ່ຜູ້ພັດທະນາລະບົບເດີ!</p>
+      <hr class="border border-gray-700 border-solid" />
+    </div>
+    <div>
+      <table
+        v-if="stadiumInfo"
+        class="border-2 border-gray-300 bg-white shadow-lg border-collapse text-center"
+      >
+        <thead>
+          <tr>
+            <th class="border border-gray-300 border-solid px-4 py-2">ລໍາດັບ</th>
+            <th class="border border-gray-300 border-solid px-4 py-2">ຊື່ເດີ່ນ</th>
+            <th class="border border-gray-300 border-solid px-4 py-2">ປະເພດເດີ່ນ</th>
+            <th class="border border-gray-300 border-solid px-4 py-2">ຄວາມຈຸຄົນ</th>
+            <th class="border border-gray-300 border-solid px-4 py-2">ລາຄາການຈອງ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(s, index) of stadiumInfo" :key="s.stadium_id">
+            <td class="border border-gray-300 border-solid px-4 py-2">{{index + 1}}</td>
+            <td class="border border-gray-300 border-solid px-4 py-2">{{s.stadium_name}}</td>
+            <td class="border border-gray-300 border-solid px-4 py-2">{{s.stadium_type}}</td>
+            <td class="border border-gray-300 border-solid px-4 py-2">{{s.stadium_capacity}}</td>
+            <td class="border border-gray-300 border-solid px-4 py-2">{{s.stadium_fee}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 <script>
@@ -111,6 +153,7 @@ export default {
       adminFullName: "",
       reservationInfo: [],
       contactInfo: [],
+      stadiumInfo: [],
       date: ""
     };
   },
@@ -118,6 +161,7 @@ export default {
     this.getAdminInfo();
     this.getReservationInfo();
     this.getContactInfo();
+    this.getStadiumInfo();
   },
   methods: {
     getAdminInfo() {
@@ -137,7 +181,6 @@ export default {
       Axios.get("/api/reservationinfo")
         .then(res => {
           this.reservationInfo = res.data.info;
-          console.log(this.reservationInfo);
         })
         .catch(err => {
           console.log(err);
@@ -149,22 +192,30 @@ export default {
           params: { selecteddate: moment(this.date).format("YYYY-MM-DD") }
         })
           .then(res => {
-              this.reservationInfo = res.data.info;
+            this.reservationInfo = res.data.info;
           })
           .catch(err => {
-              console.log(err);
+            console.log(err);
           });
       }
     },
     refresh() {
-        this.date = "";
-        this.getReservationInfo();
+      this.date = "";
+      this.getReservationInfo();
     },
     getContactInfo() {
       Axios.get("/api/contactinfo")
         .then(res => {
           this.contactInfo = res.data.info;
-          console.log(this.contactInfo);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    getStadiumInfo() {
+      Axios.get("/api/stadiuminfo")
+        .then(res => {
+          this.stadiumInfo = res.data;
         })
         .catch(err => {
           console.log(err);
@@ -174,12 +225,22 @@ export default {
       Axios.put("/api/checkin/" + parseInt(id))
         .then(res => {
           if (res.data.message == "Successful") {
-            console.log("Yes");
             this.getReservationInfo();
           }
         })
         .catch(err => {
           console.log(err);
+        });
+    },
+    deleteReservation(id) {
+      Axios.delete("/api/deletereservation/" + parseInt(id))
+        .then(res => {
+          if (res.data.message == "Successful") {
+            this.getReservationInfo();
+          }
+        })
+        .catch(err => {
+            console.log(err);
         });
     }
   }

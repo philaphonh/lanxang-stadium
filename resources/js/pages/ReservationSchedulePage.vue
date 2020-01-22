@@ -60,7 +60,11 @@
               class="border border-gray-300 border-solid px-4 py-2"
             >{{t.time}}</td>
             <td
-              :class="stadium4.includes(t) && stadium3 ? 'text-green-500' : 'text-red-500'"
+              :class="stadium4.includes(t) && stadium4 ? 'text-green-500' : 'text-red-500'"
+              class="border border-gray-300 border-solid px-4 py-2"
+            >{{t.time}}</td>
+            <td
+              :class="stadium5.includes(t) && stadium5 ? 'text-green-500' : 'text-red-500'"
               class="border border-gray-300 border-solid px-4 py-2"
             >{{t.time}}</td>
           </tr>
@@ -81,6 +85,7 @@ export default {
       stadium2: [],
       stadium3: [],
       stadium4: [],
+      stadium5: [],
       timeInfo: [],
       date: moment()
     };
@@ -115,6 +120,7 @@ export default {
       this.stadium2 = [];
       this.stadium3 = [];
       this.stadium4 = [];
+      this.stadium5 = [];
       axios
         .get("/api/reservationinfobydateandstadium", {
           params: {
@@ -204,13 +210,29 @@ export default {
             }
           });
         })
+      axios
+        .get("/api/reservationinfobydateandstadium", {
+          params: {
+            selecteddate: moment(this.date).format("YYYY-MM-DD"),
+            stadium: parseInt(5)
+          }
+        })
+        .then(res => {
+          let reservedTime = [];
+          res.data.info.forEach(i => {
+            reservedTime.push(
+              this.timeInfo.find(t => t.time_id == i.selected_time_id)
+            );
+          });
+          this.timeInfo.forEach(t => {
+            if (!reservedTime.includes(t)) {
+              this.stadium5.push(t);
+            }
+          });
+        })
         .catch(err => {
           console.log(err);
         });
-      this.stadium1.forEach(s => console.log(`1: ${s.time_id}`));
-      this.stadium2.forEach(s => console.log(`2: ${s.time_id}`));
-      this.stadium3.forEach(s => console.log(`3: ${s.time_id}`));
-      this.stadium4.forEach(s => console.log(`4: ${s.time_id}`));
     }
   }
 };

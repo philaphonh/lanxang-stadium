@@ -39,11 +39,11 @@ class ReservationController extends Controller
     {
         $date = $request->query('selecteddate', '');
         $data = DB::table('tbl_reservation')
-        ->select()
-        ->join('tbl_stadium', 'tbl_reservation.stadium_id', '=', 'tbl_stadium.stadium_id')
-        ->join('tbl_schedule', 'tbl_reservation.selected_time_id', '=', 'tbl_schedule.time_id')
-        ->where('tbl_reservation.selected_date', '=', $date)
-        ->get();
+            ->select()
+            ->join('tbl_stadium', 'tbl_reservation.stadium_id', '=', 'tbl_stadium.stadium_id')
+            ->join('tbl_schedule', 'tbl_reservation.selected_time_id', '=', 'tbl_schedule.time_id')
+            ->where('tbl_reservation.selected_date', '=', $date)
+            ->get();
         return response()->json(['info' => $data], 200);
     }
 
@@ -76,6 +76,17 @@ class ReservationController extends Controller
         $reservation = Reservation::find($id);
         $reservation->is_checked_in = !$reservation->is_checked_in;
         $result = $reservation->save();
+        if ($result) {
+            return response()->json(['message' => 'Successful'], 200);
+        } else {
+            return response()->json(['message' => 'Failed'], 500);
+        }
+    }
+
+    public function deleteReservation($id)
+    {
+        $reservation = Reservation::find($id);
+        $result = $reservation->delete();
         if ($result) {
             return response()->json(['message' => 'Successful'], 200);
         } else {
